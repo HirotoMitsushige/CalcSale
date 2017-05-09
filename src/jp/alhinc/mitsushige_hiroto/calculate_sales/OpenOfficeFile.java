@@ -154,17 +154,17 @@ public class OpenOfficeFile{
 		return false;
 	}
 	//集計ファイル処理--------------------------------------------------------------------------------------
-	public static boolean writerFile(String dirpath , String fileName , HashMap<String, Long> sales , HashMap<String, String> nameMap){
+	public static boolean writerFile(String dirpath , String fileName ,
+			HashMap<String, Long> sales , HashMap<String, String> nameMap){
 
 		BufferedWriter bw = null;
 		try{
 			File file = new File(dirpath, fileName);
-
 			bw = new BufferedWriter(new FileWriter(file));
 			List<Map.Entry<String,Long>> entries =
 					new ArrayList<Map.Entry<String,Long>>(sales.entrySet());
-			Collections.sort(entries, new Comparator<Map.Entry<String,Long>>() {
 
+			Collections.sort(entries, new Comparator<Map.Entry<String,Long>>() {
 				public int compare(Entry<String,Long> entry1, Entry<String,Long> entry2) {
 					return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue());
 				}
