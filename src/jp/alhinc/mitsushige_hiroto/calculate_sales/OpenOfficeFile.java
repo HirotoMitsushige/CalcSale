@@ -1,6 +1,5 @@
 package jp.alhinc.mitsushige_hiroto.calculate_sales;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,7 +23,7 @@ public class OpenOfficeFile{
 		BufferedReader br=null;
 		//コマンドライン引数が無いか2つ以上の場合処理を終了。
 		if(args.length==0||args.length>=2){
-			System.out.println("予期せぬエラーが発生しました。");
+			System.out.println("予期せぬエラーが発生しました");
 			return;
 		}
 		//集計用
@@ -41,7 +40,7 @@ public class OpenOfficeFile{
 				readSaleFile(args[0],"commodity.lst","^\\w{8}",commodity,commoditySaleMap)){
 		}
 		else{
-			System.out.println("予期せぬエラーが発生しました。");
+			System.out.println("予期せぬエラーが発生しました");
 			return;
 		}
 		//集計------------------------------------------------------------------------
@@ -57,7 +56,7 @@ public class OpenOfficeFile{
 			}
 			//連番処理はList化し、最大値-最小値＋1する。
 			if(!(notRcdList.size()==(notRcdList.get(notRcdList.size()-1))-(notRcdList.get(0))+1)){
-				System.out.println("売上げファイル名が連番になっていません。");
+				System.out.println("売上げファイル名が連番になっていません");
 				return;
 			}
 			Long Sale=null;
@@ -74,15 +73,15 @@ public class OpenOfficeFile{
 
 				//不正処理
 				if(!(rcd.size()==3)){
-					System.out.println(rcdList.get(i)+"のフォーマットが不正です。");
+					System.out.println(rcdList.get(i)+"のフォーマットが不正です");
 					return;
 				}
 				if(!branchSaleMap.containsKey(rcd.get(0))){
-					System.out.println(rcdList.get(i)+"の支店コードが不正です。");
+					System.out.println(rcdList.get(i)+"の支店コードが不正です");
 					return;
 				}
 				if(!commodity.containsKey(rcd.get(1))){
-					System.out.println(rcdList.get(i)+"の商品コードが不正です。");
+					System.out.println(rcdList.get(i)+"の商品コードが不正です");
 					return;
 				}
 
@@ -93,18 +92,18 @@ public class OpenOfficeFile{
 				//金額が10桁を超えたら
 				if(Sale<1000000000L){
 				}else{
-					System.out.println("合計金額が10桁を超えました。");
+					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
 			}
 		}catch(IOException e){
-			System.out.println("予期せぬエラーが発生しました。");
+			System.out.println("予期せぬエラーが発生しました");
 		}finally{
 			try{
 				if(br!=null)
 					br.close();
 			}catch(IOException e){
-				System.out.println("予期せぬエラーが発生しました。");
+				System.out.println("予期せぬエラーが発生しました");
 			}
 		}
 		//支店別集計ファイルと商品別集計ファイル----------------------------------------------------------------------
@@ -113,7 +112,7 @@ public class OpenOfficeFile{
 				writerFile(args[0],"commodity.out",commoditySaleMap,commodity)){
 
 		}else{
-			System.out.println("予期せぬエラーが発生しました。");
+			System.out.println("予期せぬエラーが発生しました");
 			return;
 		}
 	}
@@ -142,23 +141,23 @@ public class OpenOfficeFile{
 					//data.lengthで要素数を取得し、要素数が2でない場合はelse(「,」を含む文字列はＮＧ)
 					if(data[0].matches(comLineVoid)&&(data[1].matches("\\S+"))&&data.length==2){
 					}else{
-						System.out.println("支店定義ファイルのフォーマットが不正です。");
+						System.out.println("支店定義ファイルのフォーマットが不正です");
 						return false;
 					}
 					nameMap.put(data[0],data[1]);
 					sales.put(data[0],0L);
 				}
 			}else{
-				System.out.println("ファイルを読み込めません。");
+				System.out.println("ファイルを読み込めません");
 			}
 		}catch(FileNotFoundException e){
-			System.out.println("支店定義ファイルが見つかりません。");
+			System.out.println("支店定義ファイルが見つかりません");
 			return false;
 		}catch(IOException e){
-			System.out.println("予期せぬエラーが発生しました。");
+			System.out.println("予期せぬエラーが発生しました");
 			return false;
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("支店定義ファイルのフォーマットが不正です。");
+			System.out.println("支店定義ファイルのフォーマットが不正です");
 			return false;
 		}
 		//try文においてfinallyは必ず読み込まれるためここでbrを閉じる。
@@ -168,7 +167,7 @@ public class OpenOfficeFile{
 					br.close();
 					return true;
 				}catch(IOException e){
-					System.out.println("予期せぬエラーが発生しました。");
+					System.out.println("予期せぬエラーが発生しました");
 					return false;
 				}
 		}
@@ -196,7 +195,7 @@ public class OpenOfficeFile{
 				bw.newLine();
 			}
 		}catch(IOException e){
-			System.out.println("予期せぬエラーが発生しました。");
+			System.out.println("予期せぬエラーが発生しました");
 			return false;
 		}finally{
 			if(bw!=null)
@@ -204,7 +203,7 @@ public class OpenOfficeFile{
 					bw.close();
 					return true;
 				}catch(IOException e){
-					System.out.println("予期せぬエラーが発生しました。");
+					System.out.println("予期せぬエラーが発生しました");
 					return false;
 				}
 		}
