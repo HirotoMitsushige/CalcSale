@@ -1,4 +1,4 @@
-package jp.alhinc.mitsushige.hiroto.calculate_sales;
+package jp.alhinc.mitsushige_hiroto.calculate_sales;
 
 
 import java.io.BufferedReader;
@@ -92,13 +92,11 @@ public class OpenOfficeFile{
 
 				//金額が10桁を超えたら
 				if(Sale<1000000000L){
-					System.out.println(Sale);
 				}else{
 					System.out.println("合計金額が10桁を超えました。");
 					return;
 				}
 			}
-
 		}catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました。");
 		}finally{
@@ -109,8 +107,6 @@ public class OpenOfficeFile{
 				System.out.println("予期せぬエラーが発生しました。");
 			}
 		}
-
-
 		//支店別集計ファイルと商品別集計ファイル----------------------------------------------------------------------
 
 		if(writerFile(args[0],"branch.out",branchSaleMap,branch)&&
@@ -120,7 +116,6 @@ public class OpenOfficeFile{
 			System.out.println("予期せぬエラーが発生しました。");
 			return;
 		}
-
 	}
 	//ファイルチェック------------------------------------------------------------------------------------------------
 	private static boolean checkFile(File file){
@@ -141,14 +136,11 @@ public class OpenOfficeFile{
 
 			//ファイルが読み込めるかチェックする
 			if(checkFile(file)){
-				//System.out.println("支店定義ファイル");
 				while((str=br.readLine())!=null){
 					String[] data=str.split(",");
 
-
 					//data.lengthで要素数を取得し、要素数が2でない場合はelse(「,」を含む文字列はＮＧ)
 					if(data[0].matches(comLineVoid)&&(data[1].matches("\\S+"))&&data.length==2){
-						System.out.println(str);
 					}else{
 						System.out.println("支店定義ファイルのフォーマットが不正です。");
 						return false;
@@ -163,7 +155,6 @@ public class OpenOfficeFile{
 			System.out.println("支店定義ファイルが見つかりません。");
 			return false;
 		}catch(IOException e){
-			System.out.println(e);
 			System.out.println("予期せぬエラーが発生しました。");
 			return false;
 		}catch(ArrayIndexOutOfBoundsException e){
@@ -183,10 +174,8 @@ public class OpenOfficeFile{
 		}
 		return false;
 	}
-
 	//集計ファイル処理--------------------------------------------------------------------------------------
 	public static boolean writerFile(String dirpath,String fileName ,HashMap<String, Long> sales,HashMap<String, String>nameMap){
-
 
 		BufferedWriter bw=null;
 		try{
@@ -205,7 +194,6 @@ public class OpenOfficeFile{
 
 				bw.write(o.getKey()+","+nameMap.get(o.getKey())+","+o.getValue());
 				bw.newLine();
-				System.out.println(o.getKey()+","+nameMap.get(o.getKey())+","+o.getValue());
 			}
 		}catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました。");
