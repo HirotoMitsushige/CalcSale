@@ -36,11 +36,12 @@ public class OpenOfficeFile{
 
 		//支店定義ファイル----------------------------------------------------
 		//blanch.lst
-		if(readSaleFile(args[0],"branch.lst","^\\d{3}",branch,branchSaleMap)&&
-				readSaleFile(args[0],"commodity.lst","^\\w{8}",commodity,commoditySaleMap)){
+		if(!(readSaleFile(args[0],"branch.lst","^\\d{3}",
+				"支店定義ファイルのフォーマットが不正です",branch,branchSaleMap))){
+			return;
 		}
-		else{
-			System.out.println("予期せぬエラーが発生しました");
+		if(!(readSaleFile(args[0],"commodity.lst","^\\w{8}",
+				"商品定義ファイルのフォーマットが不正です",commodity,commoditySaleMap))){
 			return;
 		}
 		//集計------------------------------------------------------------------------
@@ -108,11 +109,10 @@ public class OpenOfficeFile{
 		}
 		//支店別集計ファイルと商品別集計ファイル----------------------------------------------------------------------
 
-		if(writerFile(args[0],"branch.out",branchSaleMap,branch)&&
-				writerFile(args[0],"commodity.out",commoditySaleMap,commodity)){
-
-		}else{
-			System.out.println("予期せぬエラーが発生しました");
+		if(!(writerFile(args[0],"branch.out",branchSaleMap,branch))){
+			return;
+		}
+		if(!(writerFile(args[0],"commodity.out",commoditySaleMap,commodity))){
 			return;
 		}
 	}
@@ -124,7 +124,7 @@ public class OpenOfficeFile{
 		return false;
 	}
 	//支店定義ファイルと商品定義ファイル------------------------------------------------------------------------------
-	public static boolean readSaleFile(String comLine,String fileLst,String comLineVoid,HashMap<String, String> nameMap,HashMap<String, Long>sales){
+	public static boolean readSaleFile(String comLine,String fileLst,String comLineVoid,String errMessage,HashMap<String, String> nameMap,HashMap<String, Long>sales){
 		BufferedReader br=null;
 		try{
 			//ファイルを読み込む際は区切りに「￥」を使用するとWindowsのみで動く
@@ -139,9 +139,12 @@ public class OpenOfficeFile{
 					String[] data=str.split(",");
 
 					//data.lengthで要素数を取得し、要素数が2でない場合はelse(「,」を含む文字列はＮＧ)
-					if(data[0].matches(comLineVoid)&&(data[1].matches("\\S+"))&&data.length==2){
-					}else{
-						System.out.println("支店定義ファイルのフォーマットが不正です");
+					if(!(data[0].matches(comLineVoid)&&(data[1].matches("\\S+"))&&data.length==2)){
+						System.out.println(errMessage);
+						return false;
+					}
+					if(!(data[0].matches(comLineVoid)&&(data[1].matches("\\S+"))&&data.length==2)){
+						System.out.println(errMessage);
 						return false;
 					}
 					nameMap.put(data[0],data[1]);
