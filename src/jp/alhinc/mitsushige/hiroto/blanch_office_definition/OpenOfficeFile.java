@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -61,6 +60,7 @@ public class OpenOfficeFile{
 					//System.out.println("商品定義ファイルのフォーマットが不正です。");
 				}
 			}
+			//連番処理はList化し、最大値-最小値＋1する。
 			if(!(notRcdList.size()==(notRcdList.get(notRcdList.size()-1))-(notRcdList.get(0))+1)){
 				System.out.println("売上げファイル名が連番になっていません。");
 				System.exit(0);
@@ -104,7 +104,7 @@ public class OpenOfficeFile{
 					System.exit(0);
 				}
 			}
-			//連番処理はList化し、最大値-最小値＋1する。
+
 		}catch(FileNotFoundException e){
 			System.out.println(e);
 		}catch(IOException e){
@@ -204,13 +204,10 @@ public class OpenOfficeFile{
 
 
 		BufferedWriter bw=null;
-		FileOutputStream fs = null;
 		try{
 			File file = new File(dirpath, fileName);
 
 			bw=new BufferedWriter(new FileWriter(file));
-			file.deleteOnExit();
-
 			List<Map.Entry<String,Long>> entries =
 					new ArrayList<Map.Entry<String,Long>>(sales.entrySet());
 			Collections.sort(entries, new Comparator<Map.Entry<String,Long>>() {
@@ -231,15 +228,6 @@ public class OpenOfficeFile{
 			return false;
 
 		}finally{
-			if(fs != null){
-				try {
-					fs.close();
-				} catch (IOException e) {
-					// TODO 自動生成された catch ブロック
-					System.out.println("予期せぬエラーが発生しました。");
-				}
-			}
-
 			if(bw!=null)
 				try{
 					bw.close();
