@@ -114,7 +114,7 @@ public class WriterSalesFile{
 			}
 		}
 		//支店、商品別集計ファイル----------------------------------------------------------------------
-		if(!(writerFile(args[0] , "branch.out"  ,branchSaleMap , branchMap))){
+		if(!(writerFile(args[0] , "branch.out"  , branchSaleMap , branchMap))){
 			return;
 		}
 		if(!(writerFile(args[0] , "commodity.out" , commoditySaleMap , commodityMap))){
