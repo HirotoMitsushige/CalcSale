@@ -59,15 +59,12 @@ public class WriterSalesFile{
 					return;
 				}
 			}
-			Long branchsale = null;
-			Long commoditysale = null;
+			long branchSale = 0;
+			long commoditySale = 0;
 
 			for(int i = 0; i< rcdList.size(); i++){
 				ArrayList<String> rcd = new ArrayList<>();
 				File file = new File(args[0], rcdList.get(i));
-				if(!checkFile(file)){
-					System.out.println("予期せぬエラーが発生しました");
-				}
 
 				br = new BufferedReader(new FileReader(file));
 				String s;
@@ -93,20 +90,20 @@ public class WriterSalesFile{
 					return;
 				}
 
-				branchsale = branchSaleMap.get(rcd.get(0)) + Long.parseLong(rcd.get(2));
-				commoditysale = commoditySaleMap.get(rcd.get(1)) + Long.parseLong(rcd.get(2));
+				branchSale = branchSaleMap.get(rcd.get(0)) + Long.parseLong(rcd.get(2));
+				commoditySale = commoditySaleMap.get(rcd.get(1)) + Long.parseLong(rcd.get(2));
 				//金額が10桁を超えたら
-				if(branchsale > 9999999999L){
+				if(branchSale > 9999999999L){
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
-				if(commoditysale > 9999999999L){
+				if(commoditySale > 9999999999L){
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
 
-				branchSaleMap.put(rcd.get(0), branchsale);
-				commoditySaleMap.put(rcd.get(1), commoditysale);
+				branchSaleMap.put(rcd.get(0), branchSale);
+				commoditySaleMap.put(rcd.get(1), commoditySale);
 			}
 		}catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました");
@@ -204,7 +201,7 @@ public class WriterSalesFile{
 	}
 	//ファイルチェック
 	private static boolean checkFile(File file){
-		if (file.isFile() && file.canRead() && file.exists()){
+		if (file.exists()&&file.isFile() && file.canRead()){
 			return true;
 		}
 		return false;
