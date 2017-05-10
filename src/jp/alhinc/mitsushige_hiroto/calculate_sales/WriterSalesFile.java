@@ -46,14 +46,14 @@ public class WriterSalesFile{
 			File filler = new File(args[0]);
 			String[] fileList = filler.list();
 			for(int i = 0; i < fileList.length; i++){
-				if(checkFile(filler)&&fileList[i].matches("\\d{8}.rcd$")){
+				if(fileList[i].matches("\\d{8}.rcd$")){
 					rcdList.add(fileList[i]);
 					String[] data = fileList[i].split("\\.");
 					rcdNameList.add(Integer.parseInt(data[0]));
 				}
 			}
 			//連番処理はList化し、最大値-最小値＋1する。
-			if(rcdNameList.size() != rcdNameList.get(rcdNameList.size() -1) - rcdNameList.get(0) + 1){
+			if(rcdNameList.size() > 0 && rcdNameList.size() != rcdNameList.get(rcdNameList.size() -1) - rcdNameList.get(0) + 1){
 				System.out.println("売上ファイル名が連番になっていません");
 				return;
 			}
@@ -63,6 +63,9 @@ public class WriterSalesFile{
 			for(int i = 0; i< rcdList.size(); i++){
 				ArrayList<String> rcd = new ArrayList<>();
 				File file = new File(args[0],rcdList.get(i));
+				if(!checkFile(file)){
+					System.out.println("予期せぬエラーが発生しました");
+				}
 
 				br = new BufferedReader(new FileReader(file));
 				String s;
