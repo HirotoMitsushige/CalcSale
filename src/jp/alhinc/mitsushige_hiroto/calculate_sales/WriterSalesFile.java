@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class OpenOfficeFile{
+public class WriterSalesFile{
 
 
 	public static void main(String[] args) {
@@ -46,7 +46,7 @@ public class OpenOfficeFile{
 			File filler = new File(args[0]);
 			String[] fileList = filler.list();
 			for(int i = 0; i < fileList.length; i++){
-				if(fileList[i].matches("\\d{8}.rcd$")){
+				if(checkFile(filler)&&fileList[i].matches("\\d{8}.rcd$")){
 					rcdList.add(fileList[i]);
 					String[] data = fileList[i].split("\\.");
 					rcdNameList.add(Integer.parseInt(data[0]));
@@ -57,8 +57,8 @@ public class OpenOfficeFile{
 				System.out.println("売上ファイル名が連番になっていません");
 				return;
 			}
-			Long sale = null;
-			Long sales = null;
+			Long branchsale = null;
+			Long commoditysale = null;
 
 			for(int i = 0; i< rcdList.size(); i++){
 				ArrayList<String> rcd = new ArrayList<>();
@@ -88,16 +88,20 @@ public class OpenOfficeFile{
 					return;
 				}
 
-				sale = branchSaleMap.get(rcd.get(0)) + Long.parseLong(rcd.get(2));
-				sales = commoditySaleMap.get(rcd.get(1)) + Long.parseLong(rcd.get(2));
-				branchSaleMap.put(rcd.get(0),sale);
-				commoditySaleMap.put(rcd.get(1),sales);
-
+				branchsale = branchSaleMap.get(rcd.get(0)) + Long.parseLong(rcd.get(2));
+				commoditysale = commoditySaleMap.get(rcd.get(1)) + Long.parseLong(rcd.get(2));
 				//金額が10桁を超えたら
-				if(sale > 999999999L){
+				if(branchsale > 999999999L){
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
+				if(commoditysale > 999999999L){
+					System.out.println("合計金額が10桁を超えました");
+					return;
+				}
+
+				branchSaleMap.put(rcd.get(0),branchsale);
+				commoditySaleMap.put(rcd.get(1),commoditysale);
 			}
 		}catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました");
@@ -125,6 +129,7 @@ public class OpenOfficeFile{
 			File file = new File(dirpath,fileLst);
 			if(!checkFile(file)){
 				System.out.println(errMessage+"定義ファイルが存在しません");
+				return false;
 			}
 			br = new BufferedReader(new FileReader(file));
 			String str = null;
