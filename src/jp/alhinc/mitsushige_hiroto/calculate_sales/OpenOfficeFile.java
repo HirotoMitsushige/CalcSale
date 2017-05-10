@@ -54,7 +54,7 @@ public class OpenOfficeFile{
 			}
 			//連番処理はList化し、最大値-最小値＋1する。
 			if(rcdNameList.size() != rcdNameList.get(rcdNameList.size() -1) - rcdNameList.get(0) + 1){
-				System.out.println("売上げファイル名が連番になっていません");
+				System.out.println("売上ファイル名が連番になっていません");
 				return;
 			}
 			Long sale = null;
@@ -83,6 +83,10 @@ public class OpenOfficeFile{
 					System.out.println(rcdList.get(i) + "の商品コードが不正です");
 					return;
 				}
+				if(!rcd.get(2).matches("\\d+")){
+					System.out.println("予期せぬエラーが発生しました");
+					return;
+				}
 
 				sale = branchSaleMap.get(rcd.get(0)) + Long.parseLong(rcd.get(2));
 				sales = commoditySaleMap.get(rcd.get(1)) + Long.parseLong(rcd.get(2));
@@ -91,7 +95,6 @@ public class OpenOfficeFile{
 
 				//金額が10桁を超えたら
 				if(sale > 999999999L){
-
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
@@ -120,6 +123,9 @@ public class OpenOfficeFile{
 		BufferedReader br = null;
 		try{
 			File file = new File(dirpath,fileLst);
+			if(!checkFile(file)){
+				System.out.println(errMessage+"定義ファイルが存在しません");
+			}
 			br = new BufferedReader(new FileReader(file));
 			String str = null;
 
@@ -145,13 +151,12 @@ public class OpenOfficeFile{
 			if(br != null)
 				try{
 					br.close();
-					return true;
 				}catch(IOException e){
 					System.out.println("予期せぬエラーが発生しました");
 					return false;
 				}
 		}
-		return false;
+		return true;
 	}
 	//集計ファイル処理--------------------------------------------------------------------------------------
 	public static boolean writerFile(String dirpath , String fileName ,
@@ -180,12 +185,19 @@ public class OpenOfficeFile{
 			if(bw != null)
 				try{
 					bw.close();
-					return true;
 				}catch(IOException e){
 					System.out.println("予期せぬエラーが発生しました");
 					return false;
 				}
 		}
-		return false;
+		return true;
 	}
+	 //ファイルチェック
+    private static boolean checkFile(File file){
+             if (file.isFile() && file.canRead() && file.exists()){
+                     return true;
+             }
+             return false;
+     }
+
 }
